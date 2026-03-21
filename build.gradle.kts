@@ -8,16 +8,27 @@ plugins {
 
 group = "com.nadeex.spring"
 version = "0.1.0"
-java.sourceCompatibility = JavaVersion.VERSION_21
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+// Credential resolution: local gradle.properties (gpr.user / gpr.key) → env vars → empty string
+// Set gpr.user and gpr.key in ~/.gradle/gradle.properties for local publishing — never commit them here.
+val githubUser: String = (findProperty("gpr.user") as String?) ?: System.getenv("GITHUB_ACTOR") ?: ""
+val githubToken: String = (findProperty("gpr.key") as String?) ?: System.getenv("GITHUB_TOKEN") ?: ""
 
 repositories {
+    mavenLocal()   // resolves nadeex-spring-common from local Maven cache without needing a token
     mavenCentral()
     maven {
         name = "GitHubPackages-Common"
         url = uri("https://maven.pkg.github.com/Nadee95/nadeex-spring-common")
         credentials {
-            username = System.getenv("GITHUB_ACTOR")
-            password = System.getenv("GITHUB_TOKEN")
+            username = githubUser
+            password = githubToken
         }
     }
 }
@@ -30,7 +41,7 @@ dependencyManagement {
 
 dependencies {
     // Uses CommonConstants for header names
-    api("com.nadeex.spring:common:0.1.0")
+    api("com.nadeex.spring:common:0.1.2")
 
     compileOnly("org.springframework.boot:spring-boot-starter-web")
     compileOnly("org.springframework.boot:spring-boot-starter-aop")
@@ -82,7 +93,7 @@ publishing {
                 developers {
                     developer {
                         id.set("nadee95")
-                        name.set("Nadee")
+                        name.set("Nadeeka Dilhan")
                     }
                 }
                 scm {
@@ -94,12 +105,13 @@ publishing {
         }
     }
     repositories {
+        mavenLocal()
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/Nadee95/nadeex-spring-logging")
             credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                username = githubUser
+                password = githubToken
             }
         }
     }
