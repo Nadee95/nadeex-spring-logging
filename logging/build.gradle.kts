@@ -74,14 +74,14 @@ publishing {
     }
     repositories {
         mavenLocal()
-//        maven {
-//            name = "GitHubPackages"
-//            url = uri("https://maven.pkg.github.com/Nadee95/nadeex-spring-logging")
-//            credentials {
-//                username = System.getenv("GITHUB_ACTOR")
-//                password = System.getenv("GITHUB_TOKEN")
-//            }
-//        }
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Nadee95/nadeex-spring-logging")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }
 
