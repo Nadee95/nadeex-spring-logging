@@ -23,6 +23,7 @@ val githubToken: String = (findProperty("gpr.key") as String?) ?: System.getenv(
 repositories {
     mavenLocal()   // resolves nadeex-spring-common from local Maven cache without needing a token
     mavenCentral()
+    /*
     maven {
         name = "GitHubPackages-Common"
         url = uri("https://maven.pkg.github.com/Nadee95/nadeex-spring-common")
@@ -31,6 +32,7 @@ repositories {
             password = githubToken
         }
     }
+     */
 }
 
 dependencyManagement {
@@ -51,6 +53,8 @@ dependencies {
     // Structured JSON logging
     implementation("net.logstash.logback:logstash-logback-encoder:7.4")
 
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.boot:spring-boot-starter-aop")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.jupiter:junit-jupiter")
     testCompileOnly("org.projectlombok:lombok")
@@ -80,6 +84,17 @@ publishing {
             artifactId = "logging"
             version = "0.1.0"
             from(components["java"])
+
+            // Resolves BOM-managed versions into published POM — fixes "dependencies without versions" error
+            versionMapping {
+                usage("java-api") {
+                    fromResolutionOf("runtimeClasspath")
+                }
+                usage("java-runtime") {
+                    fromResolutionResult()
+                }
+            }
+
             pom {
                 name.set("Nadeex Spring Logging")
                 description.set("Structured logging with MDC, correlation IDs, and AOP for Spring Boot")
@@ -106,6 +121,7 @@ publishing {
     }
     repositories {
         mavenLocal()
+        /*
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/Nadee95/nadeex-spring-logging")
@@ -114,5 +130,6 @@ publishing {
                 password = githubToken
             }
         }
+         */
     }
 }
