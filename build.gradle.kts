@@ -7,7 +7,6 @@ plugins {
 }
 
 group = "com.nadeex.spring"
-version = "0.1.0"
 
 java {
     toolchain {
@@ -43,7 +42,7 @@ dependencyManagement {
 
 dependencies {
     // Uses CommonConstants for header names
-    api("com.nadeex.spring:common:0.1.2")
+    api("com.nadeex.spring:common:0.1.0")
 
     compileOnly("org.springframework.boot:spring-boot-starter-web")
     compileOnly("org.springframework.boot:spring-boot-starter-aop")
@@ -82,7 +81,6 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.nadeex.spring"
             artifactId = "logging"
-            version = "0.1.0"
             from(components["java"])
 
             // Resolves BOM-managed versions into published POM — fixes "dependencies without versions" error
