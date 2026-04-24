@@ -20,9 +20,8 @@ val githubUser: String = (findProperty("gpr.user") as String?) ?: System.getenv(
 val githubToken: String = (findProperty("gpr.key") as String?) ?: System.getenv("GITHUB_TOKEN") ?: ""
 
 repositories {
-    mavenLocal()   // resolves nadeex-spring-common from local Maven cache without needing a token
+    mavenLocal()
     mavenCentral()
-    /*
     maven {
         name = "GitHubPackages-Common"
         url = uri("https://maven.pkg.github.com/Nadee95/nadeex-spring-common")
@@ -31,7 +30,6 @@ repositories {
             password = githubToken
         }
     }
-     */
 }
 
 dependencyManagement {
@@ -119,7 +117,6 @@ publishing {
     }
     repositories {
         mavenLocal()
-        /*
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/Nadee95/nadeex-spring-logging")
@@ -128,6 +125,5 @@ publishing {
                 password = githubToken
             }
         }
-         */
     }
 }
